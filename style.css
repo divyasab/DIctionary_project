@@ -1,0 +1,16 @@
+*{
+    box-sizing: border-box;
+
+}
+.searchBar{
+    text-align: center;
+    margin: auto;
+}
+button{
+    background-color:#E84848;;
+    color: white;
+}
+h3{
+    color: blue;
+    
+}
