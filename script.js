@@ -1,3 +1,4 @@
+
 const button = document.getElementById('submitButton');
 const dataContainer = document.getElementById('dataContainer');
 
@@ -6,41 +7,28 @@ button.addEventListener('click', fetchData);
 function fetchData() {
     const searchTerm = document.getElementById('searchInput').value;
     fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${searchTerm}`)
-        .then(response => response.json())
-        .then(data => {
-            let outputHTML = '';
+         .then(response => response.json())
+         .then(data => {
+            let outputHTML = `<h2> ${searchTerm}</h2>`;
 
-            data.forEach(entry => {
-                const meanings = entry.meanings;
+            data.forEach(datas => {
+            
+                datas.meanings.forEach(meaning => {
+                    outputHTML += `<h3>${meaning.partOfSpeech}</h3>`;
 
-                meanings.forEach(meaning => {
-                    const partOfSpeech = meaning.partOfSpeech;
-                    const definitions = meaning.definitions;
-
-                    definitions.forEach(definition => {
-                        const verb = definition.definition;
-                        const example = definition.example;
-
-                        let speechLabel = '';
-                        if (partOfSpeech === 'noun' || partOfSpeech === 'verb') {
-                            if (partOfSpeech === 'noun') {
-                                speechLabel = 'Noun';
-                            } else if (partOfSpeech === 'verb') {
-                                speechLabel = 'Verb';
-                            }
-
-                            outputHTML += `
-                                <p>${speechLabel}: ${verb}</p>
-                                ${example ? `<p>Example: ${example}</p>` : ''}
-                            `;
+                    meaning.definitions.forEach(definition => {
+                        outputHTML += `<p> ${definition.definition}</p>`;
+                        if (definition.example) {
+                            outputHTML += `<p>${definition.example}</p>`;
                         }
                     });
                 });
             });
 
             dataContainer.innerHTML = outputHTML;
-        })
-        .catch(error => {
+         })
+       .catch(error => {
             console.error('Error fetching data:', error);
         });
 }
+
